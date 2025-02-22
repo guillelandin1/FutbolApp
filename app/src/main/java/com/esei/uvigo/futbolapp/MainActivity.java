@@ -10,12 +10,53 @@ import android.util.Log;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private FutbolFacade futbolFacade;
+    private Button btnLogin, btnRegister;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Si ya estás logeado entras directamente
+        if(isLogged()){
+            Intent intent = new Intent(MainActivity.this, TeamActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        //Si no estás logeado, configuramos el layout.
+        setContentView(R.layout.activity_main);
+
+         //Inicializamos las vistas
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
+
+        //Configuramos los listeners de los botones
+        btnLogin.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        btnRegister.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        //Inicializamos el futbolFacade
+        futbolFacade = new FutbolFacade((FutbolApplication) getApplication(), this);
 
 
+    }
+
+    public boolean isLogged() { //Método para comprobar si el usuario ya está logueado
+        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
+        return sharedPreferences.getBoolean("isLogged", false);
+    }
 }
