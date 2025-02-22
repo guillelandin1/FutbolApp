@@ -1,8 +1,12 @@
 package com.esei.uvigo.futbolapp;
 
 import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-public class DBManager {
+public class DBManager extends SQLiteOpenHelper {
     private static final String DB_NAME = "FutbolAppDB";
     private static final int DB_VERSION = 1;
 
@@ -37,6 +41,60 @@ public class DBManager {
                 DB_NAME,
                 null,
                 DB_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db){
+
+        try{
+            db.beginTransaction();
+
+            //Crear tabla Usuarios
+            String CREATE_TABLE_USUARIOS = "CREATE TABLE " + TABLE_USUARIOS + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_USERNAME + "TEXT NOT NULL UNIQUE, " +
+                    COLUMN_PASSWORD + "TEXT NOT NULL, " +
+                    COLUMN_EMAIL + "TEXT NOT NULL UNIQUE)";
+
+            db.execSQL(CREATE_TABLE_USUARIOS);
+
+            //Crear tabla de equipo
+            String CREATE_TABLE_EQUIPO = "CREATE TABLE " + TABLE_EQUIPO + " (" +
+                    COLUMN_EQUIPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NOMBRE_EQUIPO + "TEXT NOT NULL, " +
+                    COLUMN_USUARIO_ID + "INTEGER UNIQUE, " +
+                    "FOREIGN KEY(" +  COLUMN_USUARIO_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" + ")";
+
+            db.execSQL(CREATE_TABLE_EQUIPO);
+
+            //Crear tabla de jugador
+            String CREATE_TABLE_JUGADOR = "CREATE TABLE " + TABLE_JUGADOR + " (" +
+                    COLUMN_ID_JUGADOR + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NOMBRE_JUGADOR + "TEXT NOT NULL, " +
+                    COLUMN_PARTIDOS_JUGADOS + "INTEGER, " +
+                    COLUMN_GOLES + "INTEGER, " +
+                    COLUMN_ASISTENCIAS + "INTEGER, " +
+                    COLUMN_MINUTOS + "INTEGER, " +
+                    COLUMN_TARJETAS_AMARILLAS + "INTEGER, " +
+                    COLUMN_TARJETAS_ROJAS + "INTEGER, " +
+                    COLUMN_ID_EQUIPO_FK + "INTEGER UNIQUE, " +
+                    "FOREIGN KEY(" + COLUMN_ID_EQUIPO_FK + ") REFERENCES " + TABLE_EQUIPO + "(" + COLUMN_ID + ")" + ")";
+            db.execSQL(CREATE_TABLE_JUGADOR);
+
+
+
+
+        }catch(SQLException e){
+            Log.e("DBManager", "Error creando tablas: " + e.getMessage());
+        }finally {
+            db.endTransaction();
+        }
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 
 
