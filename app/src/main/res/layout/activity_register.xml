@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#191919"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtUsername"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="  Usuario"
+        android:textColor="#A3A0B2"
+        android:textColorHint="#A3A0B2"
+        android:textColorLink="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableStart="@android:drawable/ic_lock_idle_lock"
+        android:hint=" Contraseña"
+        android:inputType="textPassword"
+        android:textColor="#A3A0B2"
+        android:textColorHint="#A3A0B2" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableStart="@android:drawable/ic_dialog_email"
+        android:hint="  Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#A3A0B2"
+        android:textColorHint="#A3A0B2" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#28A745"
+        android:gravity="center"
+        android:text="Registrarse" />
+
+</LinearLayout>
