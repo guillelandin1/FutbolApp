@@ -52,17 +52,17 @@ public class DBManager extends SQLiteOpenHelper {
             //Crear tabla Usuarios
             String CREATE_TABLE_USUARIOS = "CREATE TABLE " + TABLE_USUARIOS + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_USERNAME + "TEXT NOT NULL UNIQUE, " +
-                    COLUMN_PASSWORD + "TEXT NOT NULL, " +
-                    COLUMN_EMAIL + "TEXT NOT NULL UNIQUE)";
+                    COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, " +
+                    COLUMN_PASSWORD + " TEXT NOT NULL, " +
+                    COLUMN_EMAIL + " TEXT NOT NULL UNIQUE)";
 
             db.execSQL(CREATE_TABLE_USUARIOS);
 
             //Crear tabla de equipo
             String CREATE_TABLE_EQUIPO = "CREATE TABLE " + TABLE_EQUIPO + " (" +
                     COLUMN_EQUIPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_NOMBRE_EQUIPO + "TEXT NOT NULL, " +
-                    COLUMN_USUARIO_ID + "INTEGER UNIQUE, " +
+                    COLUMN_NOMBRE_EQUIPO + " TEXT NOT NULL, " +
+                    COLUMN_USUARIO_ID + " INTEGER UNIQUE, " +
                     "FOREIGN KEY(" +  COLUMN_USUARIO_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" + ")";
 
             db.execSQL(CREATE_TABLE_EQUIPO);
@@ -70,19 +70,19 @@ public class DBManager extends SQLiteOpenHelper {
             //Crear tabla de jugador
             String CREATE_TABLE_JUGADOR = "CREATE TABLE " + TABLE_JUGADOR + " (" +
                     COLUMN_ID_JUGADOR + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_NOMBRE_JUGADOR + "TEXT NOT NULL, " +
-                    COLUMN_PARTIDOS_JUGADOS + "INTEGER, " +
-                    COLUMN_GOLES + "INTEGER, " +
-                    COLUMN_ASISTENCIAS + "INTEGER, " +
-                    COLUMN_MINUTOS + "INTEGER, " +
-                    COLUMN_TARJETAS_AMARILLAS + "INTEGER, " +
-                    COLUMN_TARJETAS_ROJAS + "INTEGER, " +
-                    COLUMN_ID_EQUIPO_FK + "INTEGER UNIQUE, " +
+                    COLUMN_NOMBRE_JUGADOR + " TEXT NOT NULL, " +
+                    COLUMN_PARTIDOS_JUGADOS + " INTEGER, " +
+                    COLUMN_GOLES + " INTEGER, " +
+                    COLUMN_ASISTENCIAS + " INTEGER, " +
+                    COLUMN_MINUTOS + " INTEGER, " +
+                    COLUMN_TARJETAS_AMARILLAS + " INTEGER, " +
+                    COLUMN_TARJETAS_ROJAS + " INTEGER, " +
+                    COLUMN_ID_EQUIPO_FK + " INTEGER UNIQUE, " +
                     "FOREIGN KEY(" + COLUMN_ID_EQUIPO_FK + ") REFERENCES " + TABLE_EQUIPO + "(" + COLUMN_ID + ")" + ")";
             db.execSQL(CREATE_TABLE_JUGADOR);
 
 
-
+            db.setTransactionSuccessful();
 
         }catch(SQLException e){
             Log.e("DBManager", "Error creando tablas: " + e.getMessage());
@@ -93,7 +93,11 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_JUGADOR);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EQUIPO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
+        onCreate(db);
 
     }
 

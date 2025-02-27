@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +17,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FutbolFacade futbolFacade;
     private EditText edtUsername,edtPassword,edtEmail;
     private Button btnRegister;
+
+
 
 
     @Override
@@ -41,11 +45,32 @@ public class RegisterActivity extends AppCompatActivity {
                if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
                    Toast.makeText(RegisterActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
                    return;
-               } else {
-                   Toast.makeText(RegisterActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+               }if(!Utils.isValidEmail(email)){
+                   Toast.makeText(RegisterActivity.this,"El email no tiene el formato correcto, inténtelo de nuevo",Toast.LENGTH_SHORT).show();
+                   return;
+               }if(!Utils.isValidPasswd(password)){
+                   Toast.makeText(RegisterActivity.this, "La contraseña debe contener al menos 8 caracteres,una letra y un número", Toast.LENGTH_SHORT).show();
+                   return;
+               }if(futbolFacade.isEmailRegistered(email)){
+                   Toast.makeText(RegisterActivity.this,"Este email ya tiene una cuenta registrada", Toast.LENGTH_SHORT).show();
+                   return;
+               }if(registerUser(username,password,email)){
+                   Toast.makeText(RegisterActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                   startActivity(intent);
+                   finish();
+
+               }else{
+                   Toast.makeText(RegisterActivity.this, "Este usuario ya existe", Toast.LENGTH_SHORT).show();
                }
            }
 
        });
+    }
+
+    private boolean registerUser(String username, String password, String email){
+        String hashedPassword = Utils.hashPassword(password);
+
+        return futbolFacade.registerUser(username,hashedPassword,email);
     }
 }

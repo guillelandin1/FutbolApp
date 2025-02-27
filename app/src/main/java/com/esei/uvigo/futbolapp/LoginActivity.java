@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_login);
 
         //Referenciamos a los elementos del layout
         edtUsername = findViewById(R.id.edtUsername);
