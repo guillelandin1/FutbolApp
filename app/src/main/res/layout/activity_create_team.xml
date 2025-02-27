@@ -8,41 +8,24 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/edtUsername"
+        android:id="@+id/edtTeamname"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:clipToOutline="false"
         android:fallbackLineSpacing="false"
-        android:hint="Usuario"
-        android:textColor="#A3A0B2"
-        android:textColorHint="#A3A0B2" />
-
-    <EditText
-        android:id="@+id/edtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableStart="@android:drawable/ic_lock_idle_lock"
-        android:hint="    Contraseña"
-        android:inputType="textPassword"
+        android:hint="Nombre de tu equipo"
         android:textColor="#A3A0B2"
         android:textColorHint="#A3A0B2" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnCreateTeam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#28A745"
         android:gravity="center"
-        android:text="Iniciar Sesión" />
+        android:text="Crear equipo" />
 
-    <Button
-        android:id="@+id/btnResetPass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#28A745"
-        android:gravity="center"
-        android:text="Recuperar Contraseña" />
+
 
 </LinearLayout>

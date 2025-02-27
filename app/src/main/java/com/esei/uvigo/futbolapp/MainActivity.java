@@ -24,12 +24,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Si ya estás logeado entras directamente
-        if(isLogged()){
+        //Si ya estás logeado entras directamente y tienes un equipo
+        if(isLogged() && hasTeam()){
             Intent intent = new Intent(MainActivity.this, TeamActivity.class);
             startActivity(intent);
             finish();
             return;
+
+        }
+
+        if(isLogged() && !hasTeam()){
+            Intent intent = new Intent(MainActivity.this, CreateTeamActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+
         }
         //Si no estás logeado, configuramos el layout.
         setContentView(R.layout.activity_main);
@@ -55,8 +64,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean isLogged() { //Método para comprobar si el usuario ya está logueado
+    public boolean isLogged() { //Metodo para comprobar si el usuario ya está logueado
         SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
         return sharedPreferences.getBoolean("isLogged", false);
+    }
+
+    public boolean hasTeam(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+
+        return futbolFacade.hasTeam(userId);
     }
 }
