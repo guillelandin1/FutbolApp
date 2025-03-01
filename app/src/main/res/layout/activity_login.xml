@@ -11,6 +11,7 @@
         android:id="@+id/edtUsername"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+
         android:clipToOutline="false"
         android:fallbackLineSpacing="false"
         android:hint="Usuario"

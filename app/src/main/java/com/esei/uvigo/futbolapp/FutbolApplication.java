@@ -13,6 +13,6 @@ public class FutbolApplication extends Application {
     }
 
     public DBManager getDbManager(){
-        return dbManager; //Método para obtener la instancia de la BD
+        return dbManager; //Metodo para obtener la instancia de la BD
     }
 }

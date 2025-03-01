@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(userId!= -1){
                     Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                    if(futbolFacade.hasTeam(userId)){
+                    if(!futbolFacade.hasTeam(userId)){
 
                         Intent intent = new Intent(LoginActivity.this,TeamActivity.class);
                         startActivity(intent);

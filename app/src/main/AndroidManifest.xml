@@ -34,6 +34,9 @@
         <activity android:name=".CreateTeamActivity"
             android:exported="true" />
 
+        <activity android:name=".TeamActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

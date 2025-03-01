@@ -33,12 +33,19 @@ public class CreateTeamActivity extends AppCompatActivity {
 
         btnCreateTeam.setOnClickListener(new View.OnClickListener() {
             @Override
+
+
+
             public void onClick(View view) {
                 String teamname = edtTeamname.toString().trim();
 
                 if(teamname.isEmpty()){
                     Toast.makeText(CreateTeamActivity.this, "Introduzca el nombre del equipo", Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if(Utils.isValidTeam(teamname)){
+                    Toast.makeText(CreateTeamActivity.this, "El nombre del equipo debe contener al menos cuatro caracteres y solo puede contener letras y números", Toast.LENGTH_SHORT).show();
                 }
                 if(futbolFacade.registerTeam(userId,teamname)){
                     Toast.makeText(CreateTeamActivity.this, "Equipo creado con éxito", Toast.LENGTH_SHORT).show();
@@ -47,8 +54,7 @@ public class CreateTeamActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                    //TODO -> Gestionar que el equipo tenga mínimo 4 caracteres
-                    Toast.makeText(CreateTeamActivity.this, "El equipo debe contener al menos 4 carácteres", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateTeamActivity.this, "Ha ocurrido un error, inténtelo de nuevo", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
