@@ -1,4 +1,4 @@
-package com.esei.uvigo.futbolapp;
+package com.esei.uvigo.futbolapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.esei.uvigo.futbolapp.FutbolApplication;
+import com.esei.uvigo.futbolapp.R;
+import com.esei.uvigo.futbolapp.Utils;
+import com.esei.uvigo.futbolapp.db.FutbolFacade;
 
 public class RegisterActivity extends AppCompatActivity {
 

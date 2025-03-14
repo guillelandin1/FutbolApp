@@ -2,6 +2,8 @@ package com.esei.uvigo.futbolapp;
 
 import android.app.Application;
 
+import com.esei.uvigo.futbolapp.db.DBManager;
+
 public class FutbolApplication extends Application {
 
     private DBManager dbManager;

@@ -1,4 +1,4 @@
-package com.esei.uvigo.futbolapp;
+package com.esei.uvigo.futbolapp.db;
 
 import android.content.Context;
 import android.database.SQLException;

@@ -1,4 +1,4 @@
-package com.esei.uvigo.futbolapp;
+package com.esei.uvigo.futbolapp.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.esei.uvigo.futbolapp.FutbolApplication;
+import com.esei.uvigo.futbolapp.Utils;
 
 public class FutbolFacade {
     private DBManager dbManager;
@@ -17,6 +20,8 @@ public class FutbolFacade {
         this.dbManager = futbolApplication.getDbManager();
         this.context = context;
     }
+
+    //---------------METODOS USUARIO------------------------------------
 
     public boolean registerUser(String username, String password, String email){
         SQLiteDatabase db = dbManager.getWritableDatabase();
@@ -40,14 +45,8 @@ public class FutbolFacade {
             return false;
 
         }finally{
-            db.close();
+            db.endTransaction();
         }
-
-
-
-
-
-
     }
 
     public int authenticateUser(String username, String password) { //Métdo para confirmar que el usuario y contraseña coinciden y existen, además devuelve el userID
@@ -75,15 +74,18 @@ public class FutbolFacade {
             // Comparamos la contraseña ingresada con el hash almacenado
             if (Utils.checkPassword(password, storedHashedPassword)) {
                 cursor.close();
+                db.close();
                 return userId; // Devuelve el ID del usuario autenticado
             }
         }
 
-        cursor.close();
+        if(cursor != null) cursor.close();
+        db.close();
+
         return -1; // Si la autenticación falla
     }
 
-    public String getUsername(int userId){ //MÉTODO PARA DEVOLVER UN USUARIO DE LA BD POR SU ID
+    public String getUsername(int userId){ //METODO PARA DEVOLVER UN USUARIO DE LA BD POR SU ID
         SQLiteDatabase db = dbManager.getReadableDatabase();
 
         Cursor cursor = db.query(
@@ -105,33 +107,15 @@ public class FutbolFacade {
         if(cursor!=null){
             cursor.close();
         }
+        db.close();
+
 
         return null;
 
 
     }
 
-    public boolean hasTeam(int userId){
-        SQLiteDatabase db = dbManager.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                DBManager.TABLE_EQUIPO,
-                null,
-                DBManager.COLUMN_USUARIO_ID + "=?",
-                new String[]{String.valueOf(userId)},
-                null,
-                null,
-                null
-        );
-
-        if(cursor.getCount()>0){
-            cursor.close();
-            return true;
-        }else{
-            cursor.close();
-            return false;
-        }
-    }
+    //----------------METODOS EMAIL--------------------------------
 
     public boolean isEmailRegistered(String email){
         SQLiteDatabase db = dbManager.getReadableDatabase();
@@ -149,13 +133,70 @@ public class FutbolFacade {
 
         if(cursor.getCount()>0){
             cursor.close();
+            db.close();
             return true;
         }else{
             cursor.close();
+            db.close();
             return false;
         }
 
     }
+
+    //--------------------METODOS EQUIPO-------------------------
+
+    public boolean hasTeam(int userId){
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                DBManager.TABLE_EQUIPO,
+                null,
+                DBManager.COLUMN_USUARIO_ID + "=?",
+                new String[]{String.valueOf(userId)},
+                null,
+                null,
+                null
+        );
+
+        if(cursor.getCount()>0){
+            cursor.close();
+            db.close();
+            return true;
+        }else{
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
+
+    public String getTeamName(int userId){
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                DBManager.TABLE_EQUIPO,
+                new String[]{DBManager.COLUMN_NOMBRE_EQUIPO},
+                DBManager.COLUMN_EQUIPO_ID + " = ?",
+                new String[]{String.valueOf(userId)},
+                null,
+                null,
+                null
+        );
+
+        if(cursor!=null && cursor.moveToFirst()){
+            String teamName = cursor.getString(cursor.getColumnIndexOrThrow(DBManager.COLUMN_NOMBRE_EQUIPO));
+            cursor.close();
+            return teamName;
+        }
+        if(cursor!=null){
+            cursor.close();
+        }
+        db.close();
+
+
+        return null;
+    }
+
+
 
     public boolean registerTeam(int userId,String teamname){
         SQLiteDatabase db = dbManager.getWritableDatabase();
@@ -176,7 +217,7 @@ public class FutbolFacade {
             Log.e("DBManager", "Error registrando al equipo: " + e.getMessage());
             return false;
         }finally{
-            db.close();
+            db.endTransaction();
         }
 
     }

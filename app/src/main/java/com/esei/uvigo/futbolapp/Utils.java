@@ -26,7 +26,7 @@ public class Utils {
         return email != null && pattern.matcher(email).matches();
     }
 
-    public static String hashPassword(String normalPassword){ //Método para hashear la contraseña
+    public static String hashPassword(String normalPassword){ //Metodo para hashear la contraseña
 
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -48,7 +48,7 @@ public class Utils {
 
     }
 
-    public static boolean checkPassword(String normalPassword, String hashedPassword){  //Método para comprobar que la contraseña coincide
+    public static boolean checkPassword(String normalPassword, String hashedPassword){  //Metodo para comprobar que la contraseña coincide
 
         String generatedHash = hashPassword(normalPassword); // Generar el hash de la contraseña
         return generatedHash.equals(hashedPassword); // Comparar el hash generado con el hash almacenado

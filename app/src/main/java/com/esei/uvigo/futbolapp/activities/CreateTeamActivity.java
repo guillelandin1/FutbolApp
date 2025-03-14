@@ -1,4 +1,4 @@
-package com.esei.uvigo.futbolapp;
+package com.esei.uvigo.futbolapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.esei.uvigo.futbolapp.FutbolApplication;
+import com.esei.uvigo.futbolapp.R;
+import com.esei.uvigo.futbolapp.Utils;
+import com.esei.uvigo.futbolapp.db.FutbolFacade;
 
 public class CreateTeamActivity extends AppCompatActivity {
 
@@ -37,15 +42,16 @@ public class CreateTeamActivity extends AppCompatActivity {
 
 
             public void onClick(View view) {
-                String teamname = edtTeamname.toString().trim();
+                String teamname = edtTeamname.getText().toString().trim();
 
                 if(teamname.isEmpty()){
                     Toast.makeText(CreateTeamActivity.this, "Introduzca el nombre del equipo", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(Utils.isValidTeam(teamname)){
+                if(!Utils.isValidTeam(teamname)){
                     Toast.makeText(CreateTeamActivity.this, "El nombre del equipo debe contener al menos cuatro caracteres y solo puede contener letras y números", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if(futbolFacade.registerTeam(userId,teamname)){
                     Toast.makeText(CreateTeamActivity.this, "Equipo creado con éxito", Toast.LENGTH_SHORT).show();

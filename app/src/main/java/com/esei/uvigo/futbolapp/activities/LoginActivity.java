@@ -1,4 +1,4 @@
-package com.esei.uvigo.futbolapp;
+package com.esei.uvigo.futbolapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.esei.uvigo.futbolapp.FutbolApplication;
+import com.esei.uvigo.futbolapp.R;
+import com.esei.uvigo.futbolapp.db.FutbolFacade;
 
 public class LoginActivity extends AppCompatActivity {
     private FutbolFacade futbolFacade;
@@ -45,10 +49,11 @@ public class LoginActivity extends AppCompatActivity {
                 int userId = futbolFacade.authenticateUser(username,password);
 
                 if(userId!= -1){
+                    //saveSession(username,userId);
                     Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                    if(!futbolFacade.hasTeam(userId)){
+                    if(futbolFacade.hasTeam(userId)){
 
-                        Intent intent = new Intent(LoginActivity.this,TeamActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, TeamActivity.class);
                         startActivity(intent);
                         finish();
 
@@ -82,9 +87,10 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("loggeduser", username); // Guardar el nombre de usuario
+        editor.putString("logged-user", username); // Guardar el nombre de usuario
         editor.putInt("user_id", userId);         // Guardar el ID del usuario
         editor.putBoolean("isLogged", true);      // Marcar como logueado
         editor.apply();
     }
+
 }
