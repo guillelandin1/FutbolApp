@@ -55,6 +55,12 @@ public class CreateTeamActivity extends AppCompatActivity {
                 }
                 if(futbolFacade.registerTeam(userId,teamname)){
                     Toast.makeText(CreateTeamActivity.this, "Equipo creado con éxito", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("teamname", teamname);
+                    editor.apply();
+
+
                     Intent intent = new Intent(CreateTeamActivity.this, TeamActivity.class);
                     startActivity(intent);
                     finish();

@@ -15,7 +15,7 @@ public class Utils {
     }
 
     public static boolean isValidTeam(String teamname){
-        String teamRegex = "^[a-zA-Z0-9]{4,}$"; //Solo letras y números, al menos cuatro caracteres
+        String teamRegex = "^[a-zA-Z0-9\\s]{4,}$"; //Solo letras, números y espacios, al menos cuatro caracteres
         return teamname != null && Pattern.compile(teamRegex).matcher(teamname).matches();
     }
 

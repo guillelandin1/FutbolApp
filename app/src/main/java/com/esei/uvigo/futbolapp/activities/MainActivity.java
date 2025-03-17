@@ -70,12 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean isLogged() { //Metodo para comprobar si el usuario ya está logueado
-        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
-        boolean logged = sharedPreferences.getBoolean("isLogged", false);
-        Log.d("MainActivity", "isLogged: " + logged);  // Esto debería mostrar el valor actual de isLogged
-        return logged;
-    }
+
 
     public boolean hasTeam(){
         SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
@@ -84,17 +79,5 @@ public class MainActivity extends AppCompatActivity {
         return futbolFacade.hasTeam(userId);
     }
 
-    public void logoutUser() {
-        // Al hacer logout, eliminamos el estado de sesión guardado
-        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLogged", false);  // Marcamos como no logueado
-        editor.putInt("user_id", -1);  // Restablecemos el ID de usuario
-        editor.apply();
 
-        // Redirigir a la pantalla de login o de creación de equipo
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();  // Finalizamos la actividad actual
-    }
 }

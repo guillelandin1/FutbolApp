@@ -28,10 +28,11 @@ public class TeamActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
         userId = sharedPreferences.getInt("user_id", -1);
+        String teamName = sharedPreferences.getString("teamname",null);
 
         futbolFacade = new FutbolFacade((FutbolApplication) getApplication(), this);
         tvTeamName = findViewById(R.id.tvTeamName);
-        String teamName = futbolFacade.getTeamName(userId);
+        //String teamName = futbolFacade.getTeamName(userId);
 
         if (teamName == null || teamName.isEmpty()) {
             tvTeamName.setText("Equipo no encontrado"); // Mensaje de error
