@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 int userId = futbolFacade.authenticateUser(username,password);
 
                 if(userId!= -1){
-                    //saveSession(username,userId);
+                    saveSession(username,userId);
                     Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                     if(futbolFacade.hasTeam(userId)){
 
@@ -83,11 +83,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void saveSession(String username, int userId) { //Guardar la sesión por si la app se cierra inesperadamente
+    public void saveSession(String username, int userId) {
         SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("logged-user", username); // Guardar el nombre de usuario
+        editor.putString("loggeduser", username); // Guardar el nombre de usuario
         editor.putInt("user_id", userId);         // Guardar el ID del usuario
         editor.putBoolean("isLogged", true);      // Marcar como logueado
         editor.apply();

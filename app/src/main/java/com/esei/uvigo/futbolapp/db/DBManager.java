@@ -1,6 +1,7 @@
 package com.esei.uvigo.futbolapp.db;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -22,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String TABLE_EQUIPO = "equipo";
     public static final String COLUMN_EQUIPO_ID = "_id";
     public static final String COLUMN_NOMBRE_EQUIPO = "nombre";
-    public static final String COLUMN_USUARIO_ID = "usuario_id";
+
 
     //Tabla de jugadores
     public static final String TABLE_JUGADOR = "jugador";
@@ -34,7 +35,6 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String COLUMN_MINUTOS = "minutos";
     public static final String COLUMN_TARJETAS_AMARILLAS = "tarjetas_amarillas";
     public static final String COLUMN_TARJETAS_ROJAS = "tarjetas_rojas";
-    public static final String COLUMN_ID_EQUIPO_FK = "id_equipo_fk";
 
     public DBManager(Context context) {
         super(context,
@@ -62,8 +62,9 @@ public class DBManager extends SQLiteOpenHelper {
             String CREATE_TABLE_EQUIPO = "CREATE TABLE " + TABLE_EQUIPO + " (" +
                     COLUMN_EQUIPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NOMBRE_EQUIPO + " TEXT NOT NULL, " +
-                    COLUMN_USUARIO_ID + " INTEGER UNIQUE, " +
-                    "FOREIGN KEY(" +  COLUMN_USUARIO_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" + ")";
+                    " user_id INTEGER NOT NULL , " +
+                    "FOREIGN KEY(user_id) REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" +
+                    "ON DELETE CASCADE" + ")";
 
             db.execSQL(CREATE_TABLE_EQUIPO);
 
@@ -77,8 +78,9 @@ public class DBManager extends SQLiteOpenHelper {
                     COLUMN_MINUTOS + " INTEGER, " +
                     COLUMN_TARJETAS_AMARILLAS + " INTEGER, " +
                     COLUMN_TARJETAS_ROJAS + " INTEGER, " +
-                    COLUMN_ID_EQUIPO_FK + " INTEGER UNIQUE, " +
-                    "FOREIGN KEY(" + COLUMN_ID_EQUIPO_FK + ") REFERENCES " + TABLE_EQUIPO + "(" + COLUMN_ID + ")" + ")";
+                     "equipo_id INTEGER NOT NULL, " +
+                    "FOREIGN KEY(equipo_id) REFERENCES " + TABLE_EQUIPO + "(" + COLUMN_EQUIPO_ID + ")" +
+                     "ON DELETE CASCADE" + ")";
             db.execSQL(CREATE_TABLE_JUGADOR);
 
 
@@ -94,10 +96,24 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_JUGADOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EQUIPO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
-        onCreate(db);
+
+        try {
+            db.beginTransaction();
+
+            // Eliminar tablas existentes
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_JUGADOR);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_EQUIPO);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
+
+
+            onCreate(db);
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e("DBManager", "Error actualizando base de datos: " + e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
 
     }
 

@@ -21,32 +21,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         //Inicializamos el futbolFacade
         futbolFacade = new FutbolFacade((FutbolApplication) getApplication(), this);
-        //logoutUser();
-
-        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
-        boolean isLogged = sharedPreferences.getBoolean("isLogged", false);
-
 
         //Si ya estás logeado entras directamente y tienes un equipo
-        if(isLogged && hasTeam()){
-            Intent intent = new Intent(MainActivity.this, TeamActivity.class);
-            startActivity(intent);
-            finish();
-            return;
+        if(isLogged()){
+            if(hasTeam()){
+                Intent intent = new Intent(MainActivity.this, TeamActivity.class);
+                startActivity(intent);
+                finish();
+                return;
 
+            }else{
+                Intent intent = new Intent(MainActivity.this, CreateTeamActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+
+            }
         }
 
-        if(isLogged){
-            Intent intent = new Intent(MainActivity.this, CreateTeamActivity.class);
-            startActivity(intent);
-            finish();
-            return;
 
-        }
         //Si no estás logeado, configuramos el layout.
         setContentView(R.layout.activity_main);
 
@@ -68,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+    }
+
+    public boolean isLogged() { //Método para comprobar si el usuario ya está logueado
+        SharedPreferences sharedPreferences = getSharedPreferences("Session", MODE_PRIVATE);
+        return sharedPreferences.getBoolean("isLogged", false);
     }
 
 

@@ -11,11 +11,13 @@
         android:id="@+id/tvTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background"
         android:text="Nombre del Equipo"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
         android:padding="16dp" />
+
 
     <!-- Campo de búsqueda -->
     <EditText
@@ -29,11 +31,16 @@
     <Spinner
         android:id="@+id/spinnerPosition"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+       />
 
     <!-- ListView para los jugadores -->
     <ListView
         android:id="@+id/lvPlayers"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        android:backgroundTint="#191919"/>
+
+
 </LinearLayout>

@@ -147,26 +147,24 @@ public class FutbolFacade {
 
     public boolean hasTeam(int userId){
         SQLiteDatabase db = dbManager.getReadableDatabase();
+        boolean toret = false;
 
         Cursor cursor = db.query(
                 DBManager.TABLE_EQUIPO,
                 null,
-                DBManager.COLUMN_USUARIO_ID + "=?",
+                 "user_id = ?",
                 new String[]{String.valueOf(userId)},
                 null,
                 null,
                 null
         );
 
-        if(cursor.getCount()>0){
-            cursor.close();
-            db.close();
-            return true;
-        }else{
-            cursor.close();
-            db.close();
-            return false;
-        }
+       if(cursor!=null){
+           toret = cursor.getCount()>0;
+           cursor.close();
+       }
+       db.close();
+       return toret;
     }
 
     public String getTeamName(int userId){
@@ -205,7 +203,7 @@ public class FutbolFacade {
             db.beginTransaction();
             ContentValues values = new ContentValues();
             values.put(DBManager.COLUMN_NOMBRE_EQUIPO,teamname);
-            values.put(DBManager.COLUMN_USUARIO_ID, userId);
+            values.put("user_id", userId);
 
             db.insert(DBManager.TABLE_EQUIPO, null, values);
 

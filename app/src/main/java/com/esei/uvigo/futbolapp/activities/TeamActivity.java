@@ -1,7 +1,12 @@
 package com.esei.uvigo.futbolapp.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,6 +24,7 @@ public class TeamActivity extends AppCompatActivity {
     private FutbolFacade futbolFacade;
 
     private TextView tvTeamName;
+    private Button btnLogout;
     int userId;
 
     @Override
@@ -32,7 +38,15 @@ public class TeamActivity extends AppCompatActivity {
 
         futbolFacade = new FutbolFacade((FutbolApplication) getApplication(), this);
         tvTeamName = findViewById(R.id.tvTeamName);
+        btnLogout = findViewById(R.id.btnLogout);
         //String teamName = futbolFacade.getTeamName(userId);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLogoutClick();
+            }
+        });
 
         if (teamName == null || teamName.isEmpty()) {
             tvTeamName.setText("Equipo no encontrado"); // Mensaje de error
@@ -42,6 +56,42 @@ public class TeamActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        this.getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            onLogoutClick();
+            return true;
+
+        } else if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(TeamActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void onLogoutClick(){
+        SharedPreferences prefs = getSharedPreferences("Session", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.clear();
+        editor.apply();
+
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+
 
 
 }
